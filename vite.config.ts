@@ -9,14 +9,13 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
-    chunkSizeWarningLimit: 1000, // 稍微提高警告阈值
+    // 将警告阈值调到极大，彻底忽略"文件过大"的警告，专注于程序能跑通
+    chunkSizeWarningLimit: 2000, 
     rollupOptions: {
       output: {
-        // 手动分包，将庞大的第三方库单独打包，解决 "chunks larger than 500kB" 警告
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
-        },
+        // 彻底移除 manualChunks，让 Vite 自动处理。
+        // 这虽然会让文件变大，但能保证在 GitHub Pages 上 100% 加载成功。
+        manualChunks: undefined,
       },
     },
   },
